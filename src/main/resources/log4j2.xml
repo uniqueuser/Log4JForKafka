@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!-- Copyright (C) 2016 Media.net Advertising FZ-LLC All Rights Reserved -->
+
+<Configuration status="WARN">
+<Appenders>
+
+    <Kafka name="Kafka" topic="test" ignoreExceptions="false" syncSend="false">
+        <Property name="bootstrap.servers">localhost:9092</Property>
+        <JSONLayout compact="false" eventEol="true"/>
+        <Property name="batch.size">16384</Property>
+    </Kafka>
+
+    <RollingFile name="InfoAppender" fileName="/tmp/KeywordApi.log"
+                 filePattern="/tmp/KeywordApi.log.%d{H}">
+        <JSONLayout compact="false" eventEol="true"/>
+        <Policies>
+            <TimeBasedTriggeringPolicy/>
+        </Policies>
+    </RollingFile>
+
+
+    <Async name = "Aysnc" bufferSize="1000000">
+        <AppenderRef ref="${logger}"/>
+    </Async>
+</Appenders>
+<Loggers>
+    <Root level="INFO" additivity="false">
+        <AppenderRef ref="Aysnc"/>
+    </Root>
+</Loggers>
+</Configuration>
